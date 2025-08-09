@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 with open('/home/neooo333/Projects/telegram_key.txt', 'r') as key:
-    key_file = key.read ()
+    key_file = key.read ().strip ()
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('Hello! I am your friendly bot.')
