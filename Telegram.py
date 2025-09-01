@@ -23,8 +23,24 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 """
 1. /start - send greeting!
 2. /help - calls command menu 
+3. /exchange - calls for exchnge market function for a specified security
+4. /pe_qqq - returns 5 NASDAQ stocks with lowest PE
 """)
-    
+
+async def pe_qqq(update:Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text ('Loading data')
+    five_stocks = ff.pe_qqq ()
+    message = (
+        f"1. {five_stocks.index[0]} | PE: {five_stocks.iloc[0]['PE']} | Dividends: {five_stocks.iloc[0]['DIV']}\n"
+        f"2. {five_stocks.index[1]} | PE: {five_stocks.iloc[1]['PE']} | Dividends: {five_stocks.iloc[1]['DIV']}\n"
+        f"3. {five_stocks.index[2]} | PE: {five_stocks.iloc[2]['PE']} | Dividends: {five_stocks.iloc[2]['DIV']}\n"
+        f"2. {five_stocks.index[3]} | PE: {five_stocks.iloc[3]['PE']} | Dividends: {five_stocks.iloc[3]['DIV']}\n"
+        f"2. {five_stocks.index[4]} | PE: {five_stocks.iloc[4]['PE']} | Dividends: {five_stocks.iloc[4]['DIV']}"
+    )
+    await update.message.reply_text (message)
+
+
+########################################conversation for the exchange ##############################################################
 
 TICKER = 0
 
@@ -47,6 +63,17 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Conversation cancelled.")
     return ConversationHandler.END
 
+
+####################################################################################
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     app = ApplicationBuilder().token(key_file).build()
 
@@ -64,7 +91,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(conv_exchange) 
-
+    app.add_handler(CommandHandler("pe_qqq", pe_qqq))
 
     print("Bot is running...")
     app.run_polling()
